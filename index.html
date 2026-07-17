@@ -35,6 +35,7 @@ footer{padding:65px 5vw 28px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
 </div>
 <div class="hero-art">
 <video class="hero-background-video" autoplay muted loop playsinline preload="auto">
+  <source src="assets/background-video-2.mp4" type="video/mp4">
   <source src="assets/background-video-2.webM" type="video/webm">
 </video>
 <img class="hero-product" src="assets/product-5.png" alt="WEDBERRY Diamond Royale black velvet loafer">
@@ -47,7 +48,8 @@ footer{padding:65px 5vw 28px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
 </section>
 <section class="story reveal" id="story">
 <video class="story-video" autoplay muted loop playsinline preload="none" data-lazy>
-<source data-src="assets/background-video.webM" type="video/webm">
+  <source data-src="assets/background-video.mp4" type="video/mp4">
+  <source data-src="assets/background-video.webM" type="video/webm">
 </video>
 <div class="story-copy reveal">
 <div class="eyebrow">An after-dark study</div>
@@ -59,7 +61,8 @@ footer{padding:65px 5vw 28px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
 </section>
 <section class="craft reveal" id="craft">
 <video class="craft-background-video" autoplay muted loop playsinline preload="none" data-lazy>
-<source data-src="assets/background-video-3.webM" type="video/webm">
+  <source data-src="assets/background-video-3.mp4" type="video/mp4">
+  <source data-src="assets/background-video-3.webM" type="video/webm">
 </video>
 <div class="craft-inner">
 <div class="head reveal">
@@ -132,6 +135,7 @@ footer{padding:65px 5vw 28px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
 <div class="provenance reveal"><div class="edition"><small>WEDBERRY atelier edition</small>01 / 72</div><div class="provenance-item"><b>Hand finished</b><span>Made with patient precision</span></div><div class="provenance-item"><b>Private client care</b><span>Dedicated fit assistance</span></div><div class="provenance-item"><b>Secure delivery</b><span>Considered from door to doorstep</span></div></div>
 <section class="showcase reveal" id="showcase">
 <video class="showcase-background-video" autoplay muted loop playsinline preload="none" data-lazy>
+  <source data-src="assets/background-video-4.mp4" type="video/mp4">
   <source data-src="assets/background-video-4.webM" type="video/webm">
 </video>
 <div class="showcase-inner reveal">
@@ -191,9 +195,16 @@ const playVideos = () => videos.forEach(video => {
   video.play().catch(()=>{});
 });
 const loadVideo = video => {
-  const source = video.querySelector('source[data-src]');
-  if (!source || source.src) return;
-  source.src = source.dataset.src;
+  const sources = Array.from(video.querySelectorAll('source[data-src]'));
+  if (!sources.length) return;
+  let changed = false;
+  sources.forEach(source => {
+    if (!source.src && source.dataset && source.dataset.src) {
+      source.src = source.dataset.src;
+      changed = true;
+    }
+  });
+  if (!changed) return;
   video.load();
   video.play().catch(()=>{});
 };
